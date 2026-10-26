@@ -1,0 +1,34 @@
+---
+title: "MMToolbox"
+subtitle: "Tool comparisons, reports and documentation from the MMToolbox community"
+toc: false
+---
+
+Welcome! This site collects what the MMToolbox community has learned about the
+tools we use: side-by-side comparisons, research reports, and practical
+documentation.
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-4}
+### [Tools](tools/index.qmd)
+Comparisons of tools and libraries, backed by data you can sort, filter and download.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### [Reports](reports/index.qmd)
+Write-ups of our evaluations, experiments and findings.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### [Docs](docs/index.qmd)
+How-tos, guides and reference material.
+:::
+
+:::
+
+## Contributing
+
+Everything here is plain Markdown in the
+[GitHub repository](https://github.com/MMToolbox/mmtoolbox.github.io).
+See [how to contribute](contributing.qmd); adding a page takes a couple of minutes.

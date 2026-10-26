@@ -1,0 +1,68 @@
+name: Update build tools
+
+# Weekly: bump Quarto and lychee in .github/tool-versions.env
+# GitHub Actions are updated by Dependabot (.github/dependabot.yml).
+
+on:
+  schedule:
+    - cron: "23 6 * * 1" # Mondays 06:23 UTC
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: update-tools
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: automation/update-tools
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Look for new verified releases
+        run: bash .github/scripts/update-tools.sh
+
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff
+          fi
+
+      # PRs opened with the built-in token don't trigger other workflows
+      # so this needs to be tested here
+      - name: Test build with new versions
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          bash .github/scripts/install-tools.sh
+          quarto render
+          lychee --offline --no-progress --root-dir "$PWD/_site" '_site/**/*.html' || true
+
+      - name: Open or update pull request
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          source .github/tool-versions.env
+          title="Update build tools: Quarto ${QUARTO_VERSION}, lychee ${LYCHEE_VERSION}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git commit -am "$title"
+          git push --force origin "$BRANCH"
+          body="Automated update. Each download's SHA-256 matched GitHub's asset digest, the project's published checksum file, and a local hash, and the site built successfully with the new versions.
+
+          $(git show --format= HEAD -- .github/tool-versions.env | sed 's/^/    /')"
+          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+            gh pr edit "$BRANCH" --title "$title" --body "$body"
+          else
+            gh pr create --head "$BRANCH" --title "$title" --body "$body"
+          fi

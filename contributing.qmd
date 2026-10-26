@@ -1,0 +1,128 @@
+---
+title: "Contributing"
+description: "How to add or edit pages and data on this site."
+---
+
+The site is built with [Quarto](https://quarto.org) from plain Markdown files.
+You don't need R, Python or Julia, only Quarto.
+
+## Quick start
+
+1. [Install Quarto](https://quarto.org/docs/get-started/) (one installer, any OS).
+2. Clone the repository and start the live preview:
+
+   ```bash
+   git clone https://github.com/MMToolbox/mmtoolbox.github.io.git
+   cd mmtoolbox.github.io
+   quarto preview
+   ```
+
+3. Edit or add files. The browser reloads as you save.
+4. Open a pull request. A check builds the site, and once the PR is merged into
+   `main` the live site updates automatically within a couple of minutes.
+
+For small fixes you don't even need to clone: use the **Edit this page** link
+at the bottom of any page.
+
+## Where things go
+
+| Folder | Content |
+|---|---|
+| `tools/` | Tool comparisons |
+| `reports/` | Reports and findings (listed newest first, so give each one a `date`) |
+| `docs/` | Guides, how-tos, reference |
+| `data/` | CSV files behind the tables |
+| `_templates/` | Starting points to copy (not published) |
+
+Any `.qmd` or `.md` file you add to a section folder shows up in that section's
+sidebar and index page automatically. You don't need to edit any config.
+
+## Adding a page
+
+Copy `_templates/page.qmd` into a section folder, rename it (lowercase, words
+separated by hyphens, e.g. `reports/gpu-benchmark.qmd`), and fill it in. The
+part between the `---` lines at the top is metadata:
+
+```yaml
+---
+title: "GPU benchmark"
+description: "One sentence shown in listings and search."
+author:
+  - name: "Your Name"
+date: 2026-03-01
+categories: [benchmark, gpu]
+---
+```
+
+## Tables from CSV data
+
+Comparison data lives as CSV files in `data/`, which are the single source of
+truth. To show one as a sortable, filterable table:
+
+```markdown
+{{{< csv-table data/existing-tools.csv caption="Overview of compared tools" >}}}
+```
+
+- The path is relative to the repository root.
+- The first row is the header, and the first column is treated as row headers.
+  Turn this off with `row-headers="false"`.
+- Cells can contain inline Markdown, such as `[links](https://…)` and `**bold**`.
+- Other options are `download="false"` (hide the download link) and
+  `interactive="false"` (no sort or filter).
+- The CSV must be UTF-8. When exporting from Google Sheets use
+  *File → Download → Comma-separated values*. From Excel, choose *CSV UTF-8*.
+
+If you edit only a CSV file while `quarto preview` is running, save the page
+that uses it (or restart the preview) to see the change.
+
+For small one-off tables, a plain Markdown table is fine:
+
+```markdown
+| Tool | Language |
+|------|----------|
+| A    | Python   |
+
+: Caption goes here
+```
+
+## Pages with code
+
+Pages can include runnable R, Python or Julia code (see
+[Quarto's docs](https://quarto.org/docs/computations/python.html)). Because of
+`freeze: auto`, **render the page locally** (`quarto render path/to/page.qmd`)
+and commit the generated `_freeze/` folder. The online build reuses those
+results, so it never needs your language installed.
+
+## Accessibility checklist
+
+- Give every image alt text that describes what it shows: `![Bar chart of runtimes; Tool B is fastest](runtimes.png)`.
+- Use headings in order (`##`, then `###`). Don't skip levels just for looks.
+- Give tables a caption.
+- Write link text that makes sense on its own ("see the [benchmark report](…)", not "click [here](…)").
+- Don't rely on colour alone in charts. Add labels, patterns or direct annotations.
+
+## Useful Markdown extras
+
+```markdown
+::: {.callout-warning}
+Callouts: note, tip, important, warning, caution.
+:::
+
+Footnotes[^1].
+
+[^1]: Like this.
+```
+
+For more, see the [Quarto Markdown guide](https://quarto.org/docs/authoring/markdown-basics.html).
+
+## How the build works (for maintainers)
+
+- `.github/workflows/publish.yml` builds every push and PR, and deploys `main` to GitHub Pages.
+- Build tools (Quarto, the lychee link checker) are pinned in
+  `.github/tool-versions.env` with SHA-256 hashes. Every download is verified
+  before it is installed.
+- `.github/workflows/update-tools.yml` checks weekly for new releases, waits
+  until a release is 7 days old, cross-checks its hash against three sources,
+  test-builds the site, and opens a PR.
+- Dependabot (`.github/dependabot.yml`) does the same for GitHub Actions, which
+  are pinned to commit SHAs, with the same 7-day cooldown.

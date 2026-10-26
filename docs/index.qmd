@@ -1,0 +1,12 @@
+---
+title: "Docs"
+description: "How-tos, guides and reference material."
+listing:
+  contents: "*.{qmd,md}"
+  type: table
+  sort: title
+  fields: [title, description]
+---
+
+Guides and reference material (this section is where the old GitHub wiki
+content will live). Nothing here yet. See [how to contribute](../contributing.qmd).

@@ -1,0 +1,13 @@
+---
+title: "Reports"
+description: "Write-ups of our evaluations, experiments and findings."
+listing:
+  contents: "*.{qmd,md}"
+  type: default
+  sort: "date desc"
+  categories: true
+  fields: [title, description, author, date, categories]
+---
+
+Reports and findings from the MMToolbox community. Nothing here yet. See
+[how to contribute](../contributing.qmd) to add the first one.

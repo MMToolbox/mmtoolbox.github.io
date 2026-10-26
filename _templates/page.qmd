@@ -1,0 +1,32 @@
+---
+# Copy this file into tools/, reports/ or docs/ and rename it, e.g.
+# reports/my-evaluation.qmd. It appears in that section's sidebar and listing
+# automatically. Lines starting with # here are comments and can be deleted.
+title: "Page title"
+description: "One sentence shown in listings and search results."
+author:
+  - name: "Your Name"
+date: 2026-01-01
+categories: [example]
+---
+
+A short introduction: what this page is about and who it is for.
+
+## First section
+
+Normal Markdown: **bold**, *italic*, `code`, [links](https://quarto.org),
+lists, footnotes[^1], and so on.
+
+![Describe what the image shows, for people who can't see it](images/example.png)
+
+::: {.callout-tip}
+Callouts come in `note`, `tip`, `important`, `warning` and `caution` types.
+:::
+
+## A data table
+
+{{< csv-table data/existing-tools.csv caption="Describe the table" >}}
+
+## References
+
+[^1]: Footnotes look like this.

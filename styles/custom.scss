@@ -1,0 +1,23 @@
+/*-- scss:defaults --*/
+$font-size-root: 17px;
+
+/*-- scss:rules --*/
+
+// Strong, consistent focus indicator for keyboard users (both themes).
+:focus-visible {
+  outline: 3px solid $primary !important;
+  outline-offset: 2px;
+}
+
+// Keep body text at a comfortable reading width; tables may go wider.
+main.content > p,
+main.content > ul,
+main.content > ol {
+  max-width: 75ch;
+}
+
+// Underline links in body text so they don't rely on colour alone.
+main.content a:not(.nav-link):not(.btn):not(.anchorjs-link) {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}

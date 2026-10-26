@@ -1,0 +1,15 @@
+---
+title: "Tools"
+description: "Comparisons of tools and libraries."
+listing:
+  contents: "*.{qmd,md}"
+  type: table
+  sort: title
+  fields: [title, description, date-modified]
+  field-display-names:
+    date-modified: "Updated"
+---
+
+Comparisons of the tools we use. Every table is backed by a CSV in the
+[`data/`](https://github.com/MMToolbox/mmtoolbox.github.io/tree/main/data)
+folder, so you can download it or use it in your own analysis.

@@ -1,0 +1,11 @@
+---
+title: "Data standards and formats"
+description: "Existing standards for structuring and sharing data that MMToolbox could build on."
+---
+
+## BIDS
+
+The [Brain Imaging Data Structure (BIDS)](https://bids.neuroimaging.io/index.html)
+defines a standard layout and structure for storing and sharing files. It is
+oriented towards brain data, but its approach can be generalised to any
+time-series data.

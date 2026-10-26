@@ -1,0 +1,62 @@
+name: Build and deploy site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      # Actions are pinned to full commit SHAs
+      # Quarto/lychee versions are stored in .github/tool-versions.env.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # to get last modified dates for all files
+          persist-credentials: false
+
+      - name: Restore file modification times from git history
+        run: |
+          git ls-files -z | while IFS= read -r -d '' f; do
+            touch -d "$(git log -1 --format=%cI -- "$f")" "$f"
+          done
+
+      - name: Install pinned, checksum-verified Quarto and lychee
+        run: bash .github/scripts/install-tools.sh
+
+      - name: Render site
+        run: quarto render
+
+      - name: Check internal links
+        continue-on-error: true # report only, content is probably going to change a lot
+        run: lychee --offline --no-progress --root-dir "$PWD/_site" '_site/**/*.html'
+
+      - name: Upload site artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

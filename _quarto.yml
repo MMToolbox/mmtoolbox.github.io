@@ -1,0 +1,87 @@
+project:
+  type: website
+  output-dir: _site
+  # Pages and templates in folders starting with "_" are never rendered.
+  render:
+    - "*.qmd"
+    - "*.md"
+    - "!README.md"
+  # Make the raw CSVs downloadable from the site.
+  resources:
+    - data/*.csv
+
+# Shown under each page title; CI restores real file times from git history.
+date-modified: last-modified
+date-format: long
+
+website:
+  title: "MMToolbox"
+  description: "Tool comparisons, reports and documentation from the MMToolbox community."
+  site-url: https://mmtoolbox.github.io
+  repo-url: https://github.com/MMToolbox/mmtoolbox.github.io
+  repo-actions: [edit, issue]
+  page-navigation: true
+  bread-crumbs: true
+  search:
+    location: navbar
+    type: overlay
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: tools/index.qmd
+        text: Tools
+      - href: reports/index.qmd
+        text: Reports
+      - href: docs/index.qmd
+        text: Docs
+      - href: contributing.qmd
+        text: Contribute
+    right:
+      - text: Community
+        menu:
+          - text: Discussions
+            href: https://github.com/orgs/MMToolbox/discussions
+          - text: Project board
+            href: https://github.com/orgs/MMToolbox/projects/2
+    tools:
+      - icon: github
+        href: https://github.com/MMToolbox
+        aria-label: MMToolbox on GitHub
+  # Each section's sidebar lists every page in its folder automatically.
+  sidebar:
+    - id: tools
+      title: Tools
+      contents: tools
+    - id: reports
+      title: Reports
+      contents: reports
+    - id: docs
+      title: Docs
+      contents: docs
+  page-footer:
+    left: "© MMToolbox contributors · Content licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)"
+    right:
+      - text: "Contribute"
+        href: contributing.qmd
+      - icon: github
+        href: https://github.com/MMToolbox/mmtoolbox.github.io
+        aria-label: Source on GitHub
+
+format:
+  html:
+    lang: en
+    theme:
+      light: [cosmo, styles/custom.scss]
+      dark: [darkly, styles/custom.scss]
+    respect-user-color-scheme: true
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    anchor-sections: true
+    smooth-scroll: true
+
+# Pages that run R/Python/Julia are rendered by their author and the results
+# committed in _freeze/, so CI never needs those languages installed.
+execute:
+  freeze: auto

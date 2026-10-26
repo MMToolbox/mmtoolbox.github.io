@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    # Don't propose a release until it has been public for a week
+    # the recent spate of security incidents means that it's better
+    # to have a little caution.
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ["*"]

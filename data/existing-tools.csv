@@ -1,0 +1,12 @@
+Name,Link,Language,Developers
+MIR Toolbox,https://www.jyu.fi/hytk/fi/laitokset/mutku/en/research/materials/mirtoolbox,MATLAB,"Olivier, Petri"
+MoCap Toolbox,https://github.com/mocaptoolbox,MATLAB,"Petri, Martin"
+MoCap Toolbox,https://github.com/mocaptoolbox/Mocaptoolbox.jl/,Julia,Martin
+Mining Suite,https://github.com/olivierlar/miningsuite,MATLAB,Olivier
+Mopipe,https://github.com/au-imclab/mopipe,Python,@zeyus
+Respy,https://pypi.org/project/respy/0.1.1/,Python,Finn
+Pixasonics,https://github.com/balintlaczko/pixasonics,Python,Balint
+Kinetics Toolkit,https://kineticstoolkit.uqam.ca/doc/index.html,Python,
+Librosa,https://librosa.org/,Python,
+Musical Gestures Toolbox,https://github.com/fourMs/MGT-python/,Python,
+PyMIR Toolbox,https://github.com/frshdjfry/pymirtoolbox,Python,
